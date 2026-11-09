@@ -50,7 +50,7 @@ def get_scraper(site):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--site", help="designer_name של אתר בודד")
+    parser.add_argument("--site", help="key של אתר בודד, למשל hadara")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--check", metavar="URL")
     args = parser.parse_args()
@@ -61,7 +61,7 @@ def main():
 
     sites = [s for s in TARGET_SITES if s.get("enabled", True)]
     if args.site:
-        sites = [s for s in sites if s["designer_name"] == args.site]
+        sites = [s for s in sites if s["key"] == args.site]
         if not sites:
             print(f"No enabled site named {args.site!r}")
             return 1
@@ -74,8 +74,8 @@ def main():
 
     failures = []
     for site in sites:
-        name = site["designer_name"]
-        print(f"\n=== {name} ===")
+        key = site["key"]
+        print(f"\n=== {site['display_name']} ({key}) ===")
         run_started = datetime.now(timezone.utc)
         try:
             scarves = get_scraper(site)(site)
@@ -83,20 +83,20 @@ def main():
                 raise RuntimeError("Scraper returned 0 products")
             if args.dry_run:
                 os.makedirs("output", exist_ok=True)
-                path = os.path.join("output", f"{name}.json")
+                path = os.path.join("output", f"{key}.json")
                 with open(path, "w", encoding="utf-8") as f:
                     json.dump(scarves, f, ensure_ascii=False, indent=2)
                 print(f"  saved {len(scarves)} products to {path}")
             else:
                 from db import save_scarves
 
-                stats = save_scarves(conn, scarves, name, run_started)
+                stats = save_scarves(conn, scarves, key, run_started)
                 print(f"  DB: {stats}")
         except Exception as e:  # noqa: BLE001
-            print(f"  ERROR in {name}: {e}")
+            print(f"  ERROR in {key}: {e}")
             if conn:
                 conn.rollback()
-            failures.append(name)
+            failures.append(key)
 
     if conn:
         conn.close()

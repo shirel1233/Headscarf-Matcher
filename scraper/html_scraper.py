@@ -69,7 +69,7 @@ def _extract(card, sel, site):
         "pattern": find_pattern(name),
         "imageUrl": _image_src(img, base_url),
         "purchaseUrl": urljoin(base_url, href).split("#")[0],
-        "designer": site["designer_name"],
+        "designer": site["key"],
         "price": price,
         "currency": site.get("currency", "ILS"),
         "inStock": not sold_out,

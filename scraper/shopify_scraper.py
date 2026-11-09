@@ -24,7 +24,10 @@ def _get_json(url, params, retries=3):
         try:
             r = requests.get(url, params=params, headers=HEADERS, timeout=30)
             if r.status_code == 429:  # האתר מבקש להאט
-                time.sleep(5 * (attempt + 1))
+                # האתר אומר בעצמו כמה לחכות (Retry-After בשניות); אם לא אמר, מחכים הדרגתית
+                wait = int(r.headers.get("Retry-After", 5 * (attempt + 1)))
+                print(f"  rate limited, waiting {wait}s...")
+                time.sleep(wait)
                 continue
             r.raise_for_status()
             return r.json()
@@ -100,7 +103,7 @@ def normalize(p, site):
         "pattern": find_pattern(blob),
         "imageUrl": image_url,
         "purchaseUrl": f"{base_url}/products/{p['handle']}",
-        "designer": site["designer_name"],
+        "designer": site["key"],
         "price": min(prices) if prices else None,
         "currency": site.get("currency", "ILS"),
         "inStock": any(v.get("available", True) for v in variants) if variants else False,
@@ -111,7 +114,7 @@ def scrape(site):
     collections = site.get("collections") or [None]  # None = כל החנות
     raw = {}
     for collection in collections:
-        print(f"Fetching {site['designer_name']} ({collection or 'all products'})...")
+        print(f"Fetching {site['display_name']} ({collection or 'all products'})...")
         for p in fetch_all_products(site["base_url"], collection):
             raw[p["id"]] = p
 

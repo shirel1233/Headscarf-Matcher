@@ -16,7 +16,8 @@ collections (Shopify בלבד, אופציונלי):
 
 TARGET_SITES = [
     {
-        "designer_name": "הדרא",
+        "key": "hadara",
+        "display_name": "הדרא",
         "base_url": "https://www.hadara.biz",
         "platform": "shopify",
         "collections": [],
@@ -25,7 +26,8 @@ TARGET_SITES = [
         "enabled": True,
     },
     {
-        "designer_name": "אתכסיא",
+        "key": "etcasia",
+        "display_name": "אתכסיא",
         "base_url": "https://etcasiart.com",
         "platform": "html",
         "listing_urls": ["https://etcasiart.com/product-category/%D7%9E%D7%98%D7%A4%D7%97%D7%95%D7%AA/"],
@@ -44,7 +46,8 @@ TARGET_SITES = [
         "enabled": True,
     },
     {
-        "designer_name": "אביה ששון",
+        "key": "avia_sason",
+        "display_name": "אביה ששון",
         "base_url": "https://aviasason.com",
         "platform": "html",
         "listing_urls": ["https://aviasason.com/product-category/%D7%9E%D7%98%D7%A4%D7%97%D7%95%D7%AA/"],
@@ -64,7 +67,8 @@ TARGET_SITES = [
     },
     # דוגמה לאתר שאינו Shopify (selectors לדוגמה בלבד, יש להתאים ל-HTML האמיתי):
     # {
-    #     "designer_name": "דוגמה",
+    #     "key": "example",            # מזהה טכני באנגלית: משמש ב-DB ובפקודת --site
+    #     "display_name": "דוגמה",     # שם לתצוגה בעברית
     #     "base_url": "https://example.co.il",
     #     "platform": "html",
     #     "listing_urls": ["https://example.co.il/category/scarves"],
