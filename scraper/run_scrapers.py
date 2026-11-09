@@ -90,7 +90,7 @@ def main():
             else:
                 from db import save_scarves
 
-                stats = save_scarves(conn, scarves, key, run_started)
+                stats = save_scarves(conn, scarves, site["display_name"], run_started)
                 print(f"  DB: {stats}")
         except Exception as e:  # noqa: BLE001
             print(f"  ERROR in {key}: {e}")
