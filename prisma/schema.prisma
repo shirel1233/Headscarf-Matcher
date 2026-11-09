@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Dress {
+  id        String   @id @default(uuid())
+  name      String
+  color     String
+  style     String?
+  imageUrl  String?
+  inStock   Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Scarf {
+  id          String   @id @default(uuid())
+  name        String
+  color       String
+  pattern     String?
+  imageUrl    String?
+  purchaseUrl String?
+  designer    String?
+  inStock     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
